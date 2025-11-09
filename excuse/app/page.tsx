@@ -9,7 +9,7 @@ export default function Home() {
   const obtenerPato = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://random-d.uk/api/v2/random");
+      const response = await fetch("/api/duck");
       const data = await response.json();
       setDuckUrl(data.url);
     } catch (error) {
@@ -19,16 +19,18 @@ export default function Home() {
     }
   };
 
-  const obtenerDato = async () => {
-    try {
-      const response = await fetch("/duck/pato");
-      const data = await response.json();
-      setFact(data.text || "No se pudo obtener el dato del día 🥲");
-    } catch (error) {
-      console.error(error);
-      setFact("Error al cargar el dato inútil 🥲");
-    }
-  };
+const obtenerDato = async () => {
+  try {
+    const respuesta = await fetch("https://uselessfacts.jsph.pl/api/v2/facts/random?language=es", {
+      cache: "no-store",
+    });
+    const data = await respuesta.json();
+    setFact(data.text || "No se pudo obtener el dato del día 🥲");
+  } catch (error) {
+    console.error("Error al obtener el dato:", error);
+    setFact("Error al cargar el dato inútil 🥲");
+  }
+};
 
   useEffect(() => {
     obtenerPato();
@@ -37,7 +39,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-200 to-yellow-100 p-6">
-      <h1 className="text-3xl font-bold mb-4 text-blue-800">🦆 Excuse My Duck</h1>
+      <h1 className="text-3xl font-bold mb-4 text-blue-800">🦆 Facto con Cuak</h1>
       <p className="text-center text-lg mb-6 text-gray-700 max-w-md">{fact}</p>
 
       {loading ? (
